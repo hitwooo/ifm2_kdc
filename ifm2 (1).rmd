@@ -1,0 +1,51 @@
+---
+title: "IFM2"
+author: "Mai Nguyen"
+date: "2024-04-16"
+output:
+  word_document: default
+  html_document: default
+---
+
+Install package vrtest
+
+Step 1: Import data of KDC stock and define time series
+
+```{r}
+
+kdc <-KDC$price_KDC[1:475]
+dt <- diff(log(kdc))
+length(dt)
+```
+Step 2: Test for the validity of Lo-MacKinlay model
+In this step, we will check whether the KDC log-return series satify the Lo - Mackinlay model by Lo&MacKinlay Variance Ratio test.
+
+Lo & McKinley Variance Ratio Test
+- H0: The time series is a random walk, sigma^2(r_t(k))= k*sigma^2(r_t)
+- H1: The time series is not a random walk
+By M-statistic, we will derive the results of this test. According to Lo&MacKinlay,
+(giai thich)
+
+```{r}
+kvec <- c(2,4,8,16)
+
+Lo.Mac(dt,kvec)
+
+```
+Conclusion: 
+- q=2. reject H0 => there is autocorrelation at t-1
+- q=4  not reject H0 => there is not autocorrelation at t-3
+- q=8 reject H0 => there is autocorrelation at t =7
+=> KDC log-return series do not satisfy AR(1)
+=> Lo&MacKinlay Model does not satisfy.
+
+To further proof the conclusion above, we plot the ACF and PACF of the KDC log-return series.
+
+PACF and ACF of the log-return series
+```{r}
+acf(dt)
+
+```
+Final conclusion
+
+
